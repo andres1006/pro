@@ -6,8 +6,14 @@ import { AuthProvider } from "@/providers/AuthProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PRO - Plataforma de Registro Online",
-  description: "Una plataforma para autenticación y gestión de usuarios",
+  title: "PRO - Plataforma para Deportistas",
+  description:
+    "Plataforma para organizar partidos, formar equipos y seguir estadísticas deportivas",
+  manifest: "/manifest.json",
+  icons: {
+    icon: "/assets/LOGO.png",
+    apple: "/assets/LOGO.png",
+  },
 };
 
 export default function RootLayout({

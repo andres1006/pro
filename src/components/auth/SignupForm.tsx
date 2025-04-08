@@ -19,6 +19,7 @@ import Link from "next/link";
 import { AuthSuccess } from "./AuthSuccess";
 import { apiService } from "@/lib/api";
 import { useAuth } from "@/hooks/useAuth";
+import Image from "next/image";
 
 // Esquema de validación
 const formSchema = z
@@ -141,11 +142,19 @@ export function SignupForm() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-2 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight">
+      <div className="space-y-2 text-center flex flex-col items-center">
+        <Image
+          src="/assets/LOGO.png"
+          alt="Logo"
+          width={200}
+          height={200}
+          priority
+          className="brightness-0 invert"
+        />
+        <h1 className="text-2xl font-semibold tracking-tight text-white">
           Crear una cuenta
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-sm text-white font-light">
           Completa el formulario para unirte a PRO
         </p>
       </div>
@@ -163,9 +172,13 @@ export function SignupForm() {
             name="fullName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nombre completo</FormLabel>
+                <FormLabel className="text-white">Nombre completo</FormLabel>
                 <FormControl>
-                  <Input placeholder="Juan Pérez" {...field} />
+                  <Input
+                    placeholder="Juan Pérez"
+                    {...field}
+                    className="text-white placeholder:text-white/50 active:border-cyan-500 active:shadow-purple-500 focus-visible:border-cyan-500 focus-visible:shadow-purple-500 focus-visible:ring-0"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -176,11 +189,15 @@ export function SignupForm() {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nombre de usuario</FormLabel>
+                <FormLabel className="text-white">Nombre de usuario</FormLabel>
                 <FormControl>
-                  <Input placeholder="juanito" {...field} />
+                  <Input
+                    placeholder="juanito"
+                    {...field}
+                    className="text-white placeholder:text-white/50 active:border-cyan-500 active:shadow-purple-500 focus-visible:border-cyan-500 focus-visible:shadow-purple-500 focus-visible:ring-0"
+                  />
                 </FormControl>
-                <FormDescription>
+                <FormDescription className="text-white font-light text-sm">
                   Tu nombre de usuario único en la plataforma.
                 </FormDescription>
                 <FormMessage />
@@ -192,9 +209,13 @@ export function SignupForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel className="text-white">Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="tu@email.com" {...field} />
+                  <Input
+                    placeholder="tu@email.com"
+                    {...field}
+                    className="text-white placeholder:text-white/50 active:border-cyan-500 active:shadow-purple-500 focus-visible:border-cyan-500 focus-visible:shadow-purple-500 focus-visible:ring-0"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -205,9 +226,14 @@ export function SignupForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Contraseña</FormLabel>
+                <FormLabel className="text-white">Contraseña</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} />
+                  <Input
+                    type="password"
+                    {...field}
+                    placeholder="********"
+                    className="text-white placeholder:text-white/50 active:border-cyan-500 active:shadow-purple-500 focus-visible:border-cyan-500 focus-visible:shadow-purple-500 focus-visible:ring-0"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -218,21 +244,32 @@ export function SignupForm() {
             name="confirmPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Confirmar contraseña</FormLabel>
+                <FormLabel className="text-white">
+                  Confirmar contraseña
+                </FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} />
+                  <Input
+                    type="password"
+                    placeholder="********"
+                    {...field}
+                    className="text-white placeholder:text-white/50 active:border-cyan-500 active:shadow-purple-500 focus-visible:border-cyan-500 focus-visible:shadow-purple-500 focus-visible:ring-0"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button className="w-full" type="submit" disabled={isLoading}>
+          <Button
+            className="w-full bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600"
+            type="submit"
+            disabled={isLoading}
+          >
             {isLoading ? "Creando cuenta..." : "Registrarse"}
           </Button>
         </form>
       </Form>
 
-      <div className="text-center text-sm">
+      <div className="text-center text-sm text-white">
         <p>
           ¿Ya tienes una cuenta?{" "}
           <Link

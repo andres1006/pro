@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import Image from "next/image";
 
 // Esquema de validación
 const formSchema = z.object({
@@ -65,11 +66,18 @@ export function LoginForm() {
 
   return (
     <div className="space-y-6">
+      <div className="relative w-full mb-6 rounded-2xl overflow-hidden flex justify-center items-center">
+        <Image
+          src="/assets/LOGO.png"
+          alt="Deportistas"
+          width={300}
+          height={300}
+          priority
+          className="brightness-0 invert"
+        />
+      </div>
       <div className="space-y-2 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Iniciar sesión
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-sm text-white font-light">
           Ingresa tus credenciales para acceder a tu cuenta
         </p>
       </div>
@@ -81,7 +89,10 @@ export function LoginForm() {
       )}
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4 text-white"
+        >
           <FormField
             control={form.control}
             name="email"
@@ -89,7 +100,11 @@ export function LoginForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="tu@email.com" {...field} />
+                  <Input
+                    placeholder="tu@email.com"
+                    {...field}
+                    className="text-white placeholder:text-white/50 active:border-cyan-500 active:shadow-purple-500 focus-visible:border-cyan-500 focus-visible:shadow-purple-500 focus-visible:ring-0"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -102,7 +117,12 @@ export function LoginForm() {
               <FormItem>
                 <FormLabel>Contraseña</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} />
+                  <Input
+                    type="password"
+                    placeholder="********"
+                    {...field}
+                    className="text-white placeholder:text-white/50 active:border-cyan-500 active:shadow-purple-500 focus-visible:border-cyan-500 focus-visible:shadow-purple-500 focus-visible:ring-0  "
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -117,23 +137,27 @@ export function LoginForm() {
           <div className="text-sm text-right">
             <Link
               href="/forgot-password"
-              className="text-blue-600 hover:underline"
+              className="text-white hover:underline"
             >
               ¿Olvidaste tu contraseña?
             </Link>
           </div>
-          <Button className="w-full" type="submit" disabled={isLoading}>
+          <Button
+            className="w-full text-white text-lgfont-bold bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600"
+            type="submit"
+            disabled={isLoading}
+          >
             {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
           </Button>
         </form>
       </Form>
 
-      <div className="text-center text-sm">
+      <div className="text-center text-sm text-white">
         <p>
           ¿No tienes una cuenta?{" "}
           <Link
             href="/signup"
-            className="underline underline-offset-4 hover:text-primary"
+            className="underline underline-offset-4 hover:text-white"
           >
             Regístrate
           </Link>

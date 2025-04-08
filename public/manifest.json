@@ -1,0 +1,21 @@
+{
+  "name": "PRO - Plataforma para Deportistas",
+  "short_name": "PRO",
+  "description": "Plataforma para organizar partidos, formar equipos y seguir estadísticas deportivas",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#5b21b6",
+  "theme_color": "#5b21b6",
+  "icons": [
+    {
+      "src": "/assets/LOGO.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/LOGO.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+} 
