@@ -29,6 +29,7 @@ declare module "next-auth" {
 }
 
 export const authOptions: NextAuthOptions = {
+    secret: process.env.NEXTAUTH_SECRET,
 
     // Configura los proveedores de autenticación
     providers: [
@@ -48,8 +49,6 @@ export const authOptions: NextAuthOptions = {
                 }
 
                 try {
-
-                    // Implementar la lógica de autenticación   
                     const { data, error } = await supabase
                         .auth.signInWithPassword({
                             email: credentials.email,
@@ -60,7 +59,6 @@ export const authOptions: NextAuthOptions = {
                         throw new Error(error.message)
                     }
 
-                    // Retornar el usuario
                     return {
                         id: data.user.id,
                         email: data.user.email,
@@ -80,6 +78,10 @@ export const authOptions: NextAuthOptions = {
     // Configuración de sesiones y páginas
     session: {
         strategy: 'jwt',
+        maxAge: 30 * 24 * 60 * 60, // 30 días
+    },
+    jwt: {
+        maxAge: 30 * 24 * 60 * 60, // 30 días
     },
     pages: {
         signIn: '/login',
@@ -88,8 +90,10 @@ export const authOptions: NextAuthOptions = {
         newUser: '/signup',
     },
     callbacks: {
-        async session({ session }) {
+        async session({ session, token }) {
             if (session.user) {
+                session.user.id = token.sub as string;
+
                 // Obtener nombre de usuario del perfil
                 const { data: profile } = await supabase
                     .from('profiles')
@@ -105,13 +109,11 @@ export const authOptions: NextAuthOptions = {
         },
         async jwt({ token, user }) {
             if (user) {
-                token.id = user.id
+                token.sub = user.id;
             }
-            return token
+            return token;
         }
-    },
-    secret: process.env.NEXTAUTH_SECRET!,
-    debug: process.env.NODE_ENV === 'development',
+    }
 }
 
 const handler = NextAuth(authOptions)

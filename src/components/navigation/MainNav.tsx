@@ -11,19 +11,57 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, Settings, LogOut } from "lucide-react";
+import { User, LogOut, Home, CalendarDays } from "lucide-react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import Image from "next/image";
+import { ThemeToggle } from "../ThemeToggle";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+
+const navItems = [
+  { href: "/dashboard", label: "Home", icon: Home },
+  { href: "/dashboard/events", label: "Events", icon: CalendarDays },
+  { href: "/profile", label: "Profile", icon: User },
+];
 
 export function MainNav() {
   const { user, isAuthenticated, logout, isLoading } = useAuth();
+  const pathname = usePathname();
 
   return (
-    <nav className="flex items-center justify-between px-4 md:px-6 py-4 border-b">
+    <nav className="sticky top-0 z-50 w-full flex items-center justify-between px-4 md:px-6 py-3 bg-background border-b">
       <div className="flex items-center gap-6">
-        <Link href="/" className="font-bold text-xl">
-          <Image src="/assets/LOGO.png" alt="logo" width={100} height={100} />
+        <Link href="/" className="font-bold text-xl flex-shrink-0">
+          <Image
+            src="/assets/LOGO.png"
+            alt="logo"
+            width={80}
+            height={40}
+            className="h-auto"
+          />
         </Link>
+        <div className="hidden md:flex items-center gap-4">
+          {navItems.map((item) => {
+            const isActive =
+              pathname === item.href ||
+              (item.href === "/dashboard" && pathname === "/dashboard") ||
+              (item.href !== "/dashboard" && pathname.startsWith(item.href));
+
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={cn(
+                  "text-sm font-medium transition-colors hover:text-primary",
+                  isActive ? "text-primary" : "text-muted-foreground"
+                )}
+                aria-current={isActive ? "page" : undefined}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </div>
       </div>
       <div className="flex items-center gap-2">
         {isAuthenticated ? (
@@ -34,7 +72,7 @@ export function MainNav() {
                 className="relative h-8 w-8 rounded-full cursor-pointer"
                 aria-label="Opciones de usuario"
               >
-                <Avatar>
+                <Avatar className="h-8 w-8">
                   <AvatarFallback>
                     {user?.name?.charAt(0).toUpperCase() || "U"}
                   </AvatarFallback>
@@ -53,18 +91,12 @@ export function MainNav() {
                   <span>Perfil</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link
-                  href="/dashboard"
-                  className="cursor-pointer flex items-center gap-2"
-                >
-                  <Settings className="h-4 w-4" />
-                  <span>Dashboard</span>
-                </Link>
-              </DropdownMenuItem>
               <DropdownMenuSeparator />
+              <ThemeToggle />
+              <DropdownMenuSeparator />
+
               <DropdownMenuItem
-                className="cursor-pointer text-red-600 flex items-center gap-2"
+                className="cursor-pointer text-red-500 hover:!text-red-600 flex items-center gap-2"
                 onClick={logout}
               >
                 <LogOut className="h-4 w-4" />

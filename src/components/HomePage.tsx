@@ -32,9 +32,11 @@ export default function HomePage() {
 
     // Animación para cada sección
     sections.forEach((section) => {
-      const headings = section.querySelectorAll("h2, h3");
-      const paragraphs = section.querySelectorAll("p");
-      const images = section.querySelectorAll("img, .image-container");
+      const headings = section.querySelectorAll("h2, h3:not(.card h3)");
+      const paragraphs = section.querySelectorAll("p:not(.card p)");
+      const images = section.querySelectorAll(
+        "img:not(.card img), .image-container"
+      );
       const cards = section.querySelectorAll(".card");
 
       // Animar título
@@ -76,25 +78,27 @@ export default function HomePage() {
 
       // Animar imágenes
       images.forEach((image, i) => {
-        gsap.fromTo(
-          image,
-          { scale: 0.8, opacity: 0 },
-          {
-            scale: 1,
-            opacity: 1,
-            duration: 1,
-            delay: 0.3 + i * 0.2,
-            scrollTrigger: {
-              trigger: image,
-              start: "top 85%",
-              toggleActions: "play none none reset",
-            },
-          }
-        );
+        if (!image.closest(".card")) {
+          gsap.fromTo(
+            image,
+            { scale: 0.8, opacity: 0 },
+            {
+              scale: 1,
+              opacity: 1,
+              duration: 1,
+              delay: 0.3 + i * 0.2,
+              scrollTrigger: {
+                trigger: image,
+                start: "top 85%",
+                toggleActions: "play none none reset",
+              },
+            }
+          );
+        }
       });
 
       // Animar cards con stagger
-      if (cards.length) {
+      if (cards.length > 0) {
         gsap.fromTo(
           cards,
           { y: 80, opacity: 0 },
@@ -104,8 +108,8 @@ export default function HomePage() {
             stagger: 0.2,
             duration: 0.8,
             scrollTrigger: {
-              trigger: cards[0],
-              start: "top 85%",
+              trigger: section,
+              start: "top 75%",
               toggleActions: "play none none reset",
             },
           }
@@ -153,7 +157,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative bg-gray-900">
       {/* Barra de progreso de scroll */}
       <div
         className="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-purple-600 z-50 w-0"
@@ -161,44 +165,41 @@ export default function HomePage() {
       ></div>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-900 via-purple-800 to-cyan-500 text-white">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-900 via-indigo-900 to-gray-900 text-white">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="parallax-bg absolute inset-0 bg-[url('/assets/img-1.png')] opacity-10 bg-repeat scale-150"></div>
+          <div className="parallax-bg absolute inset-0 bg-[url('/assets/stadium-lights.jpg')] opacity-10 bg-cover bg-center"></div>
         </div>
 
-        <div className="container mx-auto px-4 z-10 py-24">
-          <div className="flex flex-col md:flex-row items-center justify-center">
-            <div className="flex flex-col justify-center items-center md:full text-center md:text-center mb-12 md:mb-0 ">
-              <Image
-                src="/assets/LOGO.png"
-                alt="Logo"
-                width={500}
-                height={500}
-                priority
-                className="mb-6 brightness-0 invert"
-              />
-              <h1 className="text-5xl md:text-6xl font-bold mb-6">
-                Practica <span className="text-cyan-400">Deporte</span> como un
-                profesional
-              </h1>
-              <p className="text-md font-light mb-8 text-gray-300">
-                Encuentra tu equipo, organiza partidos, reta a tus amigos y
-                sigue tus estadísticas como un verdadero profesional.
-              </p>
-              <div className="flex flex-col sm:flex-col gap-4 justify-center md:justify-start">
-                <Link
-                  href="/login"
-                  className="transition-all duration-300 rounded-lg p-2 text-xl font-normal px-8 bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:text-2xl hover:bg-gradient-to-r hover:from-cyan-600 hover:to-purple-700"
-                >
-                  Iniciar Sesión
-                </Link>
-                <Link
-                  href="/signup"
-                  className=" text-lg font-normal  text-white"
-                >
-                  Crear cuenta
-                </Link>
-              </div>
+        <div className="container mx-auto px-4 z-10 py-24 text-center">
+          <div className="max-w-3xl mx-auto">
+            <Image
+              src="/assets/LOGO.png"
+              alt="Logo PRO"
+              width={200}
+              height={200}
+              priority
+              className="mb-8 mx-auto brightness-0 invert"
+            />
+            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+              Conéctate. Compite. <span className="text-cyan-400">Domina.</span>
+            </h1>
+            <p className="text-lg md:text-xl font-light mb-10 text-gray-300 max-w-xl mx-auto">
+              La plataforma definitiva para organizar partidos, unirte a equipos
+              y llevar tus estadísticas deportivas al siguiente nivel.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/login"
+                className="transition-all duration-300 rounded-lg py-3 px-8 text-lg font-semibold bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:scale-105 hover:shadow-xl"
+              >
+                Iniciar Sesión
+              </Link>
+              <Link
+                href="/signup"
+                className="transition-all duration-300 rounded-lg py-3 px-8 text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-700/50"
+              >
+                Crear Cuenta
+              </Link>
             </div>
           </div>
         </div>

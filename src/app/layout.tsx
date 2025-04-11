@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { ThemeProvider } from "next-themes";
 
-const inter = Inter({ subsets: ["latin"] });
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "PRO - Plataforma para Deportistas",
@@ -18,17 +23,25 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="es">
-      <body className={inter.className}>
-        <AuthProvider>
-          <div className="flex min-h-screen flex-col">
-            <main className="w-screen flex-1">{children}</main>
-          </div>
-        </AuthProvider>
+    <html lang="es" suppressHydrationWarning>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased dark:bg-[#0a081c]",
+          fontSans.variable
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>{children}</AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
