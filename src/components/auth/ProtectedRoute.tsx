@@ -26,8 +26,8 @@ export default function ProtectedRoute({
   // Mientras estamos comprobando, mostramos un indicador de carga
   if (isLoading) {
     return (
-      <div className="flex flex-col justify-center items-center min-h-[60vh]">
-        <Image src="/assets/LOGO.png" alt="logo" width={400} height={400} />
+      <div className="flex flex-col justify-center items-center min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-cyan-900">
+        <Image src="/assets/LOGO.png" alt="logo" width={300} height={300} />
         <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary "></div>
       </div>
     );

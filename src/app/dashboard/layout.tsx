@@ -1,5 +1,5 @@
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
-import { MainNav } from "@/components/navigation/MainNav";
+import { TopNavbar } from "@/components/navigation/TopNavbar";
 import { BottomNav } from "@/components/navigation/BottomNav";
 
 export default function DashboardLayout({
@@ -9,9 +9,15 @@ export default function DashboardLayout({
 }) {
   return (
     <ProtectedRoute>
-      <div className="flex flex-col min-h-screen">
-        <MainNav />
-        <main className="flex-grow pb-20 md:pb-0">{children}</main>
+      <div className="flex h-[100dvh] flex-col overflow-hidden bg-background">
+        {/* Header fijo */}
+        <TopNavbar />
+        {/* Contenido principal con scroll */}
+        <main className="flex-1 overflow-y-auto ">
+          <div className=" py-4">{children}</div>
+        </main>
+
+        {/* Footer fijo en móvil */}
         <BottomNav />
       </div>
     </ProtectedRoute>

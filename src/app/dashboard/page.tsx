@@ -1,18 +1,19 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth";
-import Image from "next/image";
+import { QuickActions } from "@/components/dashboard/QuickActions";
 import {
   DetailedEventCard,
   DetailedEventData,
 } from "@/components/DetailedEventCard";
+import { FeedCard } from "@/components/feed/FeedCard";
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { createTimeline } from "animejs";
-import { EventFilters } from "@/components/EventFilters";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Filter } from "lucide-react";
+import Image from "next/image";
 
 const sampleEvents: DetailedEventData[] = [
   {
@@ -28,15 +29,15 @@ const sampleEvents: DetailedEventData[] = [
     time: "6:00 PM",
     date: "June 12",
     participants: [
-      { id: "p1", avatarUrl: "/assets/avatars/avatar-1.png" },
-      { id: "p2", avatarUrl: "/assets/avatars/avatar-2.png" },
-      { id: "p3", avatarUrl: "/assets/avatars/avatar-3.png" },
+      { id: "p1", avatarUrl: "/assets/avatar-1.jpg" },
+      { id: "p2", avatarUrl: "/assets/avatar-1.jpg" },
+      { id: "p3", avatarUrl: "/assets/avatar-1.jpg" },
     ],
     totalParticipants: 8,
   },
   {
     id: "2",
-    imageUrl: "/assets/intramural-game.jpg",
+    imageUrl: "/assets/soccer-player-kicking-ball-playing-football.jpg",
     title: "Intramural Game",
     status: "UPCOMING",
     level: "BEGINNER",
@@ -46,14 +47,14 @@ const sampleEvents: DetailedEventData[] = [
     time: "2:30 PM",
     date: "June 15",
     participants: [
-      { id: "p4", avatarUrl: "/assets/avatars/avatar-4.png" },
-      { id: "p5", avatarUrl: "/assets/avatars/avatar-5.png" },
+      { id: "p4", avatarUrl: "/assets/avatar-1.jpg" },
+      { id: "p5", avatarUrl: "/assets/avatar-1.jpg" },
     ],
     totalParticipants: 5,
   },
   {
     id: "3",
-    imageUrl: "/assets/basketball-court.jpg",
+    imageUrl: "/assets/male-soccer-player-with-ball-grass-field.jpg",
     title: "Partido de Baloncesto 3v3",
     status: "ACTIVE",
     level: "ADVANCED",
@@ -64,51 +65,64 @@ const sampleEvents: DetailedEventData[] = [
     time: "10:00 AM",
     date: "June 16",
     participants: [
-      { id: "p6", avatarUrl: "/assets/avatars/avatar-1.png" },
-      { id: "p7", avatarUrl: "/assets/avatars/avatar-2.png" },
-      { id: "p8", avatarUrl: "/assets/avatars/avatar-3.png" },
-      { id: "p9", avatarUrl: "/assets/avatars/avatar-4.png" },
+      { id: "p6", avatarUrl: "/assets/avatar-1.jpg" },
+      { id: "p7", avatarUrl: "/assets/avatar-1.jpg" },
+      { id: "p8", avatarUrl: "/assets/avatar-1.jpg" },
+      { id: "p9", avatarUrl: "/assets/avatar-1.jpg" },
     ],
     totalParticipants: 4,
   },
 ];
 
-export default function DashboardPage(/* { searchParams } */) {
-  // --- Lógica de Filtrado (Conceptual - Debería hacerse en Server Component o API) ---
-  /* 
-  // Extraer filtros de searchParams
-  const sportFilter = searchParams?.sport;
-  const levelFilter = searchParams?.level;
-  const distanceFilter = searchParams?.distance;
-  const availableFilter = searchParams?.available === 'true';
+// Datos de ejemplo para el feed
+const samplePosts = [
+  {
+    id: "1",
+    author: {
+      name: "Henry Gutiérrez",
+      image: "/assets/avatar-1.jpg",
+      username: "henrygutierrez",
+    },
+    content:
+      "¡Gran entrenamiento hoy con el equipo! 💪⚽️ Preparándonos para el torneo del próximo mes.",
+    images: [
+      "/assets/soccer-player-kicking-ball-playing-football.jpg",
+      "/assets/male-soccer-player-with-ball-grass-field.jpg",
+      "/assets/sportsman-sitting-grass-holding-football-dusk.jpg",
+    ],
+    timestamp: "2h",
+    likes: 24,
+    comments: 5,
+    location: "Manizales",
+  },
+  {
+    id: "2",
+    author: {
+      name: "Camila Agudelo",
+      image: "/assets/avatar-1.jpg",
+      username: "camilaagudelo",
+    },
+    content: "Victoria en el partido de hoy! 🏆 Gracias a todos por el apoyo.",
+    images: ["/assets/img-5.jpg"],
+    timestamp: "4h",
+    likes: 45,
+    comments: 12,
+  },
+];
 
-  // Cargar datos INICIALES ya filtrados desde el servidor/API
-  // const events = await fetchFilteredEvents({ 
-  //   sport: sportFilter,
-  //   level: levelFilter,
-  //   maxDistance: distanceFilter,
-  //   availableOnly: availableFilter
-  // }); 
-  */
+export default function DashboardPage() {
+  const { isLoading } = useAuth();
+  const searchParams = useSearchParams();
+  const [showFilters, setShowFilters] = useState(false);
 
-  // Mantener datos de ejemplo por ahora para visualización
-  const events = sampleEvents;
-  // -----------------------------------------------------------------------------------
-
-  // --- Lógica del Cliente (useAuth, Animaciones) ---
-  const { isLoading } = useAuth(); // Mantenido si es necesario en cliente
-  const searchParams = useSearchParams(); // Hook para leer params
-  const [showFilters, setShowFilters] = useState(false); // Estado para visibilidad
-
-  // --- Comprobar si hay filtros activos en la URL ---
-  const activeFilterParams = ["sport", "level", "distance", "available"]; // Parámetros a comprobar
+  // Comprobar si hay filtros activos
+  const activeFilterParams = ["sport", "level", "distance", "available"];
   const hasActiveFilters = activeFilterParams.some(
     (param) =>
       searchParams.has(param) &&
       searchParams.get(param) !== "any" &&
       searchParams.get(param) !== ""
   );
-  // -------------------------------------------------
 
   useEffect(() => {
     const timeline = createTimeline({
@@ -131,15 +145,6 @@ export default function DashboardPage(/* { searchParams } */) {
     };
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col justify-center items-center min-h-[60vh]">
-        <Image src="/assets/LOGO.png" alt="logo" width={400} height={400} />
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary "></div>
-      </div>
-    );
-  }
-
   const handleJoin = (eventId: string) => {
     console.log(`Joining event: ${eventId}`);
   };
@@ -148,50 +153,61 @@ export default function DashboardPage(/* { searchParams } */) {
     console.log(`Viewing details for event: ${eventId}`);
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center">
+        <Image src="/assets/LOGO.png" alt="logo" width={300} height={300} />
+        <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Contenedor para título y botón de filtros */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Próximos Eventos</h1>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setShowFilters(!showFilters)}
-        >
-          <Filter className="h-4 w-4 mr-2" />
-          Filters
-          {/* Indicador de filtros activos */}
-          {hasActiveFilters && !showFilters && (
-            <Badge
-              variant="destructive"
-              className="ml-2 !px-1.5 !py-0.5 rounded-full text-xs"
-            >
-              !
-            </Badge>
-          )}
-        </Button>
+    <div className="space-y-6">
+      {/* QuickActions Component */}
+      <QuickActions />
+
+      {/* Feed Section */}
+      <div className="space-y-4 px-4">
+        {/* Filters Header */}
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold">Feed Deportivo</h2>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowFilters(!showFilters)}
+          >
+            <Filter className="mr-2 h-4 w-4" />
+            Filtros
+            {hasActiveFilters && !showFilters && (
+              <Badge
+                variant="destructive"
+                className="ml-2 !rounded-full !px-1.5 !py-0.5 text-xs"
+              >
+                !
+              </Badge>
+            )}
+          </Button>
+        </div>
+
+        {/* Feed Posts */}
+        <div className="space-y-4">
+          {samplePosts.map((post) => (
+            <FeedCard key={post.id} post={post} />
+          ))}
+        </div>
       </div>
 
-      {/* Renderizado condicional de filtros */}
-      {showFilters && <EventFilters />}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6">
-        {" "}
-        {/* Añadir margen superior si los filtros están ocultos */}
-        {events.map((event) => (
-          <div key={event.id} className="dashboard-event-card">
-            <DetailedEventCard
-              event={event}
-              onJoinClick={handleJoin}
-              onDetailsClick={handleViewDetails}
-            />
-          </div>
+      {/* Events Feed */}
+      <div className="grid gap-4 px-4 md:grid-cols-2 lg:grid-cols-3">
+        {sampleEvents.map((event) => (
+          <DetailedEventCard
+            key={event.id}
+            event={event}
+            onJoinClick={handleJoin}
+            onDetailsClick={handleViewDetails}
+          />
         ))}
-        {events.length === 0 && !isLoading && (
-          <p className="text-muted-foreground col-span-full text-center py-10">
-            No events match the current filters.
-          </p>
-        )}
       </div>
     </div>
   );

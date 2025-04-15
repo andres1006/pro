@@ -30,7 +30,7 @@ const EventCard: React.FC<EventCardProps> = ({
   const showParticipants = participants.length > 0;
 
   return (
-    <div className="bg-white dark:bg-gray-800/60 backdrop-blur-md rounded-lg shadow-lg overflow-hidden text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700/50 card">
+    <div className="bg-white dark:bg-gray-800/60 backdrop-blur-md rounded-lg shadow-lg overflow-hidden text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700/50 ">
       <div className="relative h-48 w-full">
         <Image
           src={imageUrl}

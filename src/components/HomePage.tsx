@@ -160,45 +160,52 @@ export default function HomePage() {
     <div className="relative bg-gray-900">
       {/* Barra de progreso de scroll */}
       <div
-        className="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-purple-600 z-50 w-0"
+        className="fixed top-0 left-0 h-1 bg-gradient-to-r from-cyan-500 to-purple-600 z-50 w-0"
         ref={scrollLineRef}
       ></div>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-900 via-indigo-900 to-gray-900 text-white">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-cyan-500 via-indigo-900 to-gray-900 text-white">
         <div className="absolute inset-0 overflow-hidden">
           <div className="parallax-bg absolute inset-0 bg-[url('/assets/stadium-lights.jpg')] opacity-10 bg-cover bg-center"></div>
         </div>
 
         <div className="container mx-auto px-4 z-10 py-24 text-center">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-3xl mx-auto flex flex-col items-center justify-center">
             <Image
               src="/assets/LOGO.png"
               alt="Logo PRO"
               width={200}
               height={200}
               priority
-              className="mb-8 mx-auto brightness-0 invert"
+              className="mb-8 md:w-1/2 md:h-1/2 mx-auto brightness-0 invert"
             />
-            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
-              Conéctate. Compite. <span className="text-cyan-400">Domina.</span>
+            <h1 className="text-2xl md:text-2xl font-extrabold mb-6 leading-tight text-center animate-fade-in">
+              <span className=" hover:animate-zoom">Conéctate.</span>{" "}
+              <span className="text-teal-500 hover:animate-zoom">Compite.</span>{" "}
+              <span className="text-cyan-500 hover:animate-zoom">Domina</span>
             </h1>
-            <p className="text-lg md:text-xl font-light mb-10 text-gray-300 max-w-xl mx-auto">
-              La plataforma definitiva para organizar partidos, unirte a equipos
-              y llevar tus estadísticas deportivas al siguiente nivel.
+            <p className="text-md md:text-md font-light mb-10 text-white max-w-xl mx-auto animate-fade-in-up">
+              Encuentra tu equipo ideal ⚽️, organiza partidos en minutos 🏀 y
+              lleva registro de cada victoria 🏆. <br />
+              <br />
+              ¡Tu próxima aventura deportiva comienza aquí! 🚀
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col  gap-2 justify-center px-5 animate-fade-in-up">
               <Link
                 href="/login"
-                className="transition-all duration-300 rounded-lg py-3 px-8 text-lg font-semibold bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:scale-105 hover:shadow-xl"
+                className="transition-all duration-300 rounded-lg py-3 px-8 text-lg bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:scale-105 hover:shadow-xl hover:from-cyan-600 hover:to-purple-700 transform hover:-translate-y-1 "
               >
-                Iniciar Sesión
+                Iniciar Sesión ✨
               </Link>
               <Link
                 href="/signup"
-                className="transition-all duration-300 rounded-lg py-3 px-8 text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-700/50"
+                className="transition-all duration-300 rounded-lg py-3 px-8 text-md font-medium text-white hover:text-white hover:bg-transparent hover:scale-105 transform hover:-translate-y-1 "
               >
-                Crear Cuenta
+                No tienes una cuenta?{" "}
+                <span className="text-teal-500 hover:text-teal-400">
+                  Regístrate 🎯
+                </span>
               </Link>
             </div>
           </div>

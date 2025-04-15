@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -17,7 +15,7 @@ const navigationItems = [
     label: "Crear",
   },
   {
-    href: "/events",
+    href: "/dashboard/events",
     icon: CalendarDays,
     label: "Eventos",
   },
@@ -32,9 +30,9 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex h-16 shrink-0 items-center backdrop-blur md:hidden bg-gradient-to-br from-cyan-900/15 via-indigo-900/10 to-cyan-900/50">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 h-16 backdrop-blur md:hidden bg-gradient-to-br from-purple-900/10 via-indigo-900/10 to-cyan-900/50">
       <div className="container h-full">
-        <div className={`grid h-full grid-cols-4`}>
+        <div className="grid h-full grid-cols-5">
           {navigationItems.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
@@ -46,8 +44,8 @@ export function BottomNav() {
                 className={cn(
                   "flex flex-col items-center justify-center gap-1 text-xs transition-colors",
                   isActive
-                    ? "text-cyan-500"
-                    : "text-cyan-100 hover:text-cyan-400"
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-primary"
                 )}
               >
                 <Icon className="h-5 w-5" />
